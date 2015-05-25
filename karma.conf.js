@@ -19,7 +19,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'exif.js',
       'megapix-image.js',
-      'angular-canvas-ext.js',
+      'angular-canvas.js',
       'tests/**/*.js',
       {pattern: 'tests/img/**', watched: false, included: false, served: true}
       
