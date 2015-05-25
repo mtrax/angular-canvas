@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     },
     clean: {
       dist: {
-        src: ["angular-canvas-ext.*", 'exif.*', 'megapix-image.*']
+        src: ["angular-canvas.*", 'exif.*', 'megapix-image.*']
       },
       temp: {
         src: ["src/generated"]
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['src/generated/module.js', 'src/generated/helpers.js', 'src/generated/directives.js'],
-        dest: 'angular-canvas-ext.js',
+        dest: 'angular-canvas.js',
       },
       exif: {
         src: ['src/libs/binaryajax.js', 'src/libs/exif.js'],
@@ -70,8 +70,8 @@ module.exports = function(grunt) {
         options: {
           mangle: false
         },
-        src: ['angular-canvas-ext.js'],
-        dest: 'angular-canvas-ext.min.js'
+        src: ['angular-canvas.js'],
+        dest: 'angular-canvas.min.js'
       },
       exif: {
         src: ['exif.js'],

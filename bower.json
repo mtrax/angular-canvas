@@ -6,7 +6,7 @@
     "Alex Petropavlovsky <petalvlad@gmail.com>"
   ],
   "description": "An Angular module that allows to open images in canvas, zoom, pan, crop, resize and download image",
-  "main": "angular-canvas-ext.js",
+  "main": "angular-canvas.js",
   "keywords": [
     "angularjs",
     "canvas",
