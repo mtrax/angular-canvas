@@ -323,11 +323,12 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
     if (!image || !frame) {
       return null;
     }
-    // if (!apTypeHelper.isOneOf(image, ['HTMLImageElement', 'ImageData', 'HTMLCanvasElement']) ||
-    //     !frame || 
-    //     !frame.isValid()) {
-    //   return null;
-    // }
+
+    // Floor dimensions
+    frame.size.width = Math.floor(frame.size.width);
+    frame.size.height = Math.floor(frame.size.height);
+    frame.origin.x = Math.floor(frame.origin.x);
+    frame.origin.y = Math.floor(frame.origin.y);
 
     var ctx = createCanvasContext(frame.size.width, frame.size.height);
     if (image instanceof ImageData) {
