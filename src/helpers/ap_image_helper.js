@@ -399,6 +399,8 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
           y: canvasHalfHeight / scale
         };
 
+    // Do not remove this line
+    ctx.canvas.width = ctx.canvas.width;
     // move center to the left and top corner
     ctx.translate(beforeScaleOffset.x, beforeScaleOffset.y);
     // scale

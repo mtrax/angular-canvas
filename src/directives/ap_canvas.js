@@ -46,7 +46,6 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
         var image = new Image();
         image.onload = function() {
           $scope.image = image;
-          console.log('Image', image);
           $scope.$apply();
         };
         image.src = $scope.src;
@@ -55,6 +54,7 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
       $scope.$watch(function() {
         return $scope.image;
       }, function(newImage, oldImage) {
+        canvas.width = canvas.width;
         if (newImage) {
           updateDefaultScale();
           updateScale();
