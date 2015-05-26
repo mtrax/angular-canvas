@@ -355,6 +355,8 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
         x: canvasHalfWidth / scale,
         y: canvasHalfHeight / scale
       };
+    // Do not remove this line
+    ctx.canvas.width = ctx.canvas.width;
     // move center to the left and top corner
     ctx.translate(beforeScaleOffset.x, beforeScaleOffset.y);
     // scale
@@ -443,7 +445,6 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
         var image = new Image();
         image.onload = function () {
           $scope.image = image;
-          console.log('Image', image);
           $scope.$apply();
         };
         image.src = $scope.src;
@@ -451,6 +452,7 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
       $scope.$watch(function () {
         return $scope.image;
       }, function (newImage, oldImage) {
+        canvas.width = canvas.width;
         if (newImage) {
           updateDefaultScale();
           updateScale();
