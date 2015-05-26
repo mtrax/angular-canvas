@@ -1,6 +1,6 @@
 {
   "name": "angular-canvas",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "An Angular module that allows to open images in canvas, zoom, pan, crop, resize and download image",
   "main": "angular-canvas.js",
   "scripts": {
