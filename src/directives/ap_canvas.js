@@ -48,6 +48,7 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
           $scope.image = image;
           $scope.$apply();
         };
+        image.crossOrigin = "Anonymous";
         image.src = $scope.src;
       }
 
@@ -86,15 +87,15 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
       function drawImage() {
         if (!$scope.image || isUpdateScale || isUpdateOffset) {
           return;
-        }        
+        }
         clipToBounds();
-        $scope.frame = apImageHelper.drawImage($scope.image, $scope.scale, $scope.offset, ctx);        
+        $scope.frame = apImageHelper.drawImage($scope.image, $scope.scale, $scope.offset, ctx);
       }
 
       function clipToBounds() {
         isUpdateOffset = true;
         var bounds = {
-              width: canvas.width, 
+              width: canvas.width,
               height: canvas.height
             },
             offsetLimits = apImageHelper.getImageOffsetLimits($scope.image, $scope.scale, bounds);
@@ -102,23 +103,23 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
         if ($scope.offset.y < offsetLimits.top) {
           $scope.offset.y = offsetLimits.top;
         }
-        
+
         if ($scope.offset.y > offsetLimits.bottom) {
           $scope.offset.y = offsetLimits.bottom;
         }
-        
+
         if ($scope.offset.x < offsetLimits.left) {
           $scope.offset.x = offsetLimits.left;
         }
-        
+
         if ($scope.offset.x > offsetLimits.right) {
           $scope.offset.x = offsetLimits.right;
         }
         isUpdateOffset = false;
       }
-      
+
       if ($scope.zoomable) {
-        
+
         function getMousePosition(e) {
           var rect = canvas.getBoundingClientRect();
           return {
@@ -131,7 +132,7 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
           event.preventDefault();
           isMoving = moving;
           if (moving) {
-            previousMousePosition = getMousePosition(position);  
+            previousMousePosition = getMousePosition(position);
           }
         }
 
@@ -144,16 +145,16 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
               y: $scope.offset.y + (mousePosition.y - previousMousePosition.y)
             }
             previousMousePosition = mousePosition;
-            $scope.$apply(); 
+            $scope.$apply();
           }
         }
 
         function zoom(e, touch1, touch2) {
-          e.preventDefault();            
+          e.preventDefault();
           var dist = Math.sqrt(Math.pow(touch2.pageX - touch1.pageX, 2) + Math.pow(touch2.pageY - touch1.pageY, 2));
           if (lastZoomDist) {
-            $scope.scale *= dist / lastZoomDist;            
-            $scope.$apply(); 
+            $scope.scale *= dist / lastZoomDist;
+            $scope.$apply();
           }
           lastZoomDist = dist;
         }
@@ -164,7 +165,7 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
 
         function handleTouchStart(e) {
           if (e.targetTouches.length === 1) {
-            setIsMoving(true, e, e.changedTouches[0]);  
+            setIsMoving(true, e, e.changedTouches[0]);
           }
         }
 
@@ -178,19 +179,19 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
         }
 
         function handleMouseMove(e) {
-          moveTo(e, e);                 
+          moveTo(e, e);
         }
-        
+
         function handleTouchMove(e) {
           if (e.targetTouches.length >= 2) {
             var touch1 = e.targetTouches[0],
                 touch2 = e.targetTouches[1];
             if (touch1 && touch2) {
-              zoom(e, touch1, touch2);              
-            }  
-          }          
+              zoom(e, touch1, touch2);
+            }
+          }
           else {
-            moveTo(e, e.changedTouches[0]);             
+            moveTo(e, e.changedTouches[0]);
           }
         }
 
@@ -200,7 +201,7 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
           }
           else {
             $scope.scale /= 1.01;
-          }          
+          }
         }
 
         canvas.addEventListener('mousedown', handleMouseDown, false);
@@ -219,15 +220,15 @@ canvasExtModule.directive('apCanvas', function(apImageHelper) {
           return $scope.scale;
         }, function(newScale, oldScale) {
           if (newScale && newScale < defaultScale) {
-            setScale(defaultScale);            
+            setScale(defaultScale);
           }
-          drawImage();  
+          drawImage();
         });
 
         $scope.$watch(function() {
           return $scope.offset;
         }, function(newOffset) {
-          drawImage();  
+          drawImage();
         });
 
       }

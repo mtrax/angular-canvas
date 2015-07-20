@@ -61,7 +61,7 @@ module.exports = function(grunt) {
         src: ['src/libs/megapix-image.js'],
         dest: 'megapix-image.js'
       }
-    },    
+    },
     uglify: {
       options: {
         preserveComments: 'some'

@@ -178,6 +178,7 @@
                 window.webkitURL && window.webkitURL.createObjectURL ? window.webkitURL :
                 null;
       if (!URL) { throw Error("No createObjectURL function found to create blob url"); }
+      img.crossOrigin = 'Anonymous';
       img.src = URL.createObjectURL(srcImage);
       this.blob = srcImage;
       srcImage = img;

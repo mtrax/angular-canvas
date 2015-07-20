@@ -1,5 +1,5 @@
 canvasExtModule.factory('apTypeHelper', function() {
-  
+
   function objectType(obj){
     var text = Function.prototype.toString.call(obj.constructor)
     return text.match(/function (.*)\(/)[1]
@@ -122,9 +122,9 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
   }
 
   function imagesDifference(img1, img2, tolerance, strict) {
-    // if (!apTypeHelper.isOneOf(img1, ['HTMLImageElement', 'ImageData']) || 
+    // if (!apTypeHelper.isOneOf(img1, ['HTMLImageElement', 'ImageData']) ||
     //     !apTypeHelper.isOneOf(img2, ['HTMLImageElement', 'ImageData'])) {
-    //   return undefined;  
+    //   return undefined;
     // }
 
     var img1Data = img1 instanceof ImageData ? img1.data : imageToImageData(img1).data,
@@ -134,7 +134,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
 
     var difference = 0;
     for (var i = 0; i < img1Data.length; i++) {
-      if (img1Data[i] !== img2Data[i] && 
+      if (img1Data[i] !== img2Data[i] &&
           Math.abs(img1Data[i] - img2Data[i]) > tolerance) {
         if (strict) {
           return 100;
@@ -143,7 +143,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       }
     }
     var differencePercent = difference * 100 / img1Data.length;
-    
+
     return differencePercent;
   }
 
@@ -167,6 +167,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       d.resolve(null);
       $rootScope.$apply();
     };
+    image.crossOrigin = "Anonymous";
     image.src = url;
     return d.promise;
   }
@@ -181,7 +182,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
 
   function downloadImageHandler(imageDataURI, filename, event) {
     var dataURI = imageDataURI;
-    
+
     function prevent() {
       event.preventDefault();
       return false;
@@ -190,22 +191,22 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
     if (!dataURI) {
       return prevent();
     }
-    
+
     if (platform.ios) {
       window.win = open(dataURI);
-      return prevent();       
+      return prevent();
     }
 
     if (browser.msie) {
       var blob = dataURItoBlob(dataURI);
       if (blob && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, filename);  
+        window.navigator.msSaveOrOpenBlob(blob, filename);
       }
       return prevent();
     }
 
     var type = mimetypeOfDataURI(dataURI);
-    dataURI = dataURI.replace(type, "image/octet-stream"); 
+    dataURI = dataURI.replace(type, "image/octet-stream");
     event.currentTarget.href = dataURI;
     event.currentTarget.download = filename;
     return true;
@@ -234,7 +235,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
     else {
       byteString = unescape(dataURI.split(',')[1]);
     }
-        
+
     var mimeString = mimetypeOfDataURI(dataURI);
 
     var ab = new ArrayBuffer(byteString.length);
@@ -260,23 +261,24 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       image.onload = function () {
         if (platform.ios) {
           getImageOrientation(image, function(orientation) {
-            var fixOptions = {               
+            var fixOptions = {
               orientation: orientation,
-              maxWidth: 500, 
+              maxWidth: 500,
               maxHeight: 500
             };
             getCanvasWithFixedImage(image, fixOptions, function(target) {
               callback(canvasToDataURI(target, type, quality));
-            });            
-          });  
+            });
+          });
         }
         else {
           var ctx = createCanvasContext(image.width, image.height);
           ctx.drawImage(image, 0, 0);
           callback(canvasToDataURI(ctx.canvas, type, quality));
-        }        
+        }
       };
-      image.src = imgSrc;  
+      image.crossOrigin = 'Anonymous';
+      image.src = imgSrc;
     }
     else {
       callback(null);
@@ -291,8 +293,8 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
 
   function getCanvasWithFixedImage(image, fixOptions, callback) {
     var mpImg = new MegaPixImage(image),
-        canvas = createCanvasContext(image.width, image.height).canvas;    
-    
+        canvas = createCanvasContext(image.width, image.height).canvas;
+
     mpImg.onrender = function(target) {
       callback(target);
     }
@@ -303,13 +305,13 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
   function copyImageData(ctx, src) {
     var dst = ctx.createImageData(src.width, src.height);
     if (dst.data.set) {
-      dst.data.set(src.data);  
+      dst.data.set(src.data);
     }
     else {
       var srcData = src.data,
           dstData = dst.data;
       for (var i = 0; i < srcData.length; ++i) {
-        dstData[i] = srcData[i];  
+        dstData[i] = srcData[i];
       }
     }
     return dst;
@@ -353,19 +355,19 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
         scale = fill ? Math.max(widthScale, heightScale) : Math.min(widthScale, heightScale),
         size = {
           width: image.width * scale,
-          height: image.height * scale 
+          height: image.height * scale
         };
 
     var dstCtx = createCanvasContext(size.width, size.height);
-    
+
     if (image instanceof ImageData) {
       var srcCtx = createCanvasContext(image.width, image.height);
-      srcCtx.putImageData(image, 0, 0); 
-      image = srcCtx.canvas;         
+      srcCtx.putImageData(image, 0, 0);
+      image = srcCtx.canvas;
     }
-    
-    dstCtx.drawImage(image, 0, 0, dstCtx.canvas.width, dstCtx.canvas.height);  
-    
+
+    dstCtx.drawImage(image, 0, 0, dstCtx.canvas.width, dstCtx.canvas.height);
+
     return canvasData(dstCtx, type, quality);
   }
 
@@ -392,7 +394,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
         canvasHalfHeight = ctx.canvas.height / 2,
         beforeScaleOffset = {
           x: (-imageHalfWidth + offset.x) * scale,
-          y: (-imageHalfHeight + offset.y) * scale 
+          y: (-imageHalfHeight + offset.y) * scale
         },
         afterScaleOffset = {
           x: canvasHalfWidth / scale,
@@ -408,21 +410,21 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
     // move center back to the center
     ctx.translate(afterScaleOffset.x, afterScaleOffset.y);
     // draw image in original size
-    ctx.drawImage(image, 0, 0, image.width, image.height); 
+    ctx.drawImage(image, 0, 0, image.width, image.height);
     // return frame of cropped image
-    
+
     var x = imageHalfWidth - canvasHalfWidth / scale - offset.x,
         y = imageHalfHeight - canvasHalfHeight / scale - offset.y,
         width = ctx.canvas.width / scale,
-        height = ctx.canvas.height / scale; 
+        height = ctx.canvas.height / scale;
 
-    return makeFrame(x, y, width, height);       
+    return makeFrame(x, y, width, height);
   }
 
   function snapImage(image, size, scale, offset) {
     var ctx = createCanvasContext(size.width, size.height);
     drawImage(image, scale, offset, ctx);
-    return canvasData(ctx); 
+    return canvasData(ctx);
   }
 
   function canvasToDataURI(canvas, type, quality) {
