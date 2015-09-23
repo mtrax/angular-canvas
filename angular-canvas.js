@@ -175,8 +175,12 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       d.resolve(null);
       $rootScope.$apply();
     };
-    image.crossOrigin = 'Anonymous';
-    image.src = url;
+    try{
+      image.src = url;
+    }catch(e){
+      image.crossOrigin = 'Anonymous';
+      image.src = url;
+    }
     return d.promise;
   }
   function loadImagesFromUrls(urls) {
@@ -269,8 +273,12 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
           callback(canvasToDataURI(ctx.canvas, type, quality));
         }
       };
-      image.crossOrigin = 'Anonymous';
-      image.src = imgSrc;
+      try{
+        image.src = imgSrc;
+      }catch(e){
+        image.crossOrigin = 'Anonymous';
+        image.src = imgSrc;
+      }
     } else {
       callback(null);
     }
@@ -436,7 +444,6 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
       $scope.$watch(function () {
         return $scope.src;
       }, function (newSrc) {
-        console.log('new src ' + newSrc);
         if (newSrc) {
           loadImage();
         } else {
@@ -449,8 +456,12 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
           $scope.image = image;
           $scope.$apply();
         };
-        image.crossOrigin = 'Anonymous';
-        image.src = $scope.src;
+        try{
+          image.src = $scope.src;
+        }catch(e){
+          image.crossOrigin = 'Anonymous';
+          image.src = $scope.src;
+        }
       }
       $scope.$watch(function () {
         return $scope.image;
@@ -616,7 +627,6 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
     },
     link: function ($scope, element, attrs) {
       var updateImageSrc = function (src) {
-        console.log('new src ' + src);
         $scope.src = src;
         $scope.$apply();
         if ($scope.onImageReady) {
@@ -624,7 +634,6 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
         }
       };
       element.bind('change', function (e) {
-        console.log('file changed');
         if ($scope.onImageSelected) {
           $scope.onImageSelected();
         }

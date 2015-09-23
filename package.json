@@ -1,6 +1,6 @@
 {
   "name": "angular-canvas",
-  "version": "0.0.12",
+  "version": "0.0.15",
   "description": "An Angular module that allows to open images in canvas, zoom, pan, crop, resize and download image",
   "main": "angular-canvas.js",
   "scripts": {
@@ -35,5 +35,9 @@
     "grunt-karma": "~0.8.0",
     "karma-jasmine": "~0.2.2",
     "karma-chrome-launcher": "~0.1.2"
+  },
+  "homepage": "https://github.com/angular-canvas/angular-canvas#readme",
+  "directories": {
+    "test": "tests"
   }
 }
