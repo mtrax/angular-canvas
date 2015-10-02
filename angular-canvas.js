@@ -175,12 +175,11 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       d.resolve(null);
       $rootScope.$apply();
     };
-    try{
-      image.src = url;
-    }catch(e){
-      image.crossOrigin = 'Anonymous';
-      image.src = url;
+    if(url.substring(0,4).toLowerCase()==='http') {
+      image.crossOrigin = 'anonymous';
     }
+    image.src = url;
+    
     return d.promise;
   }
   function loadImagesFromUrls(urls) {
@@ -273,12 +272,10 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
           callback(canvasToDataURI(ctx.canvas, type, quality));
         }
       };
-      try{
-        image.src = imgSrc;
-      }catch(e){
-        image.crossOrigin = 'Anonymous';
-        image.src = imgSrc;
+      if(imgSrc.substring(0,4).toLowerCase()==='http') {
+        image.crossOrigin = 'anonymous';
       }
+      image.src = imgSrc;
     } else {
       callback(null);
     }
@@ -456,12 +453,10 @@ canvasExtModule.directive('apCanvas', function (apImageHelper) {
           $scope.image = image;
           $scope.$apply();
         };
-        try{
-          image.src = $scope.src;
-        }catch(e){
-          image.crossOrigin = 'Anonymous';
-          image.src = $scope.src;
+        if($scope.src.substring(0,4).toLowerCase()==='http') {
+          image.crossOrigin = 'anonymous';
         }
+        image.src = $scope.src;
       }
       $scope.$watch(function () {
         return $scope.image;
