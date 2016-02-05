@@ -96,7 +96,8 @@ canvasExtModule.factory('apFrame', function(apTypeHelper, apPosition, apSize) {
 
 canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelper, apTypeHelper, apPosition, apSize, apFrame) {
   var browser = apBrowserHelper.browser,
-      platform = apBrowserHelper.platform;
+      platform = apBrowserHelper.platform,
+      fileType = 'image/jpeg';
 
   function createCanvasContext(width, height) {
     var canvas = document.createElement('canvas');
@@ -252,8 +253,11 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
       callback(null);
       return;
     }
+    
+    fileType = file.Type;
+    
     if (!type) {
-      type = file.type;
+      type = fileType;
     }
     var imgSrc = URL.createObjectURL(file);
     if (imgSrc && imgSrc !== "") {
@@ -429,7 +433,7 @@ canvasExtModule.factory('apImageHelper', function ($rootScope, $q, apBrowserHelp
 
   function canvasToDataURI(canvas, type, quality) {
     if (!type) {
-      type = 'image/jpeg';
+      type = fileType;
     }
     if (!quality) {
       quality = 1.0;
